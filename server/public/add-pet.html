@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Add a New Pet</title>
+</head>
+<body>
+  <h1>Add a New Pet</h1>
+  <form id="petForm">
+    <label>Name: <input type="text" name="name" /></label><br />
+    <label>Species: <input type="text" name="species" /></label><br />
+    <label>Age: <input type="number" name="age" /></label><br />
+    <button type="submit">Add Pet</button>
+  </form>
+
+  <script>
+    document.getElementById("petForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const pet = Object.fromEntries(formData.entries());
+
+      const response = await fetch("/api/v1/pets", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pet),
+      });
+
+      const result = await response.json();
+      console.log("Server response:", result);
+      alert("Pet added!");
+    });
+  </script>
+</body>
+</html>
